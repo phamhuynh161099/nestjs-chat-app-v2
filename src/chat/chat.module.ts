@@ -17,6 +17,7 @@ import { Message } from '../entities/message.entity';
         }),
     ],
     providers: [ChatGateway, ChatService],
+    exports: [ChatService],
     // controllers: [ChatController],
 })
 export class ChatModule { }

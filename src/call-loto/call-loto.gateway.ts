@@ -10,6 +10,7 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { ChatService } from 'src/chat/chat.service';
 
 @WebSocketGateway({
     cors: {
@@ -27,6 +28,7 @@ export class CallLotoGateway implements OnGatewayConnection, OnGatewayDisconnect
 
     constructor(
         private jwtService: JwtService,
+         private chatService: ChatService,
     ) { }
 
     async handleConnection(client: Socket) {
@@ -64,21 +66,21 @@ export class CallLotoGateway implements OnGatewayConnection, OnGatewayDisconnect
         console.log(`ws::call-loto>>User connected`);
     }
 
-    // @SubscribeMessage('joinRoom')
-    // async handleJoinRoom(
-    //     @ConnectedSocket() client: Socket,
-    //     @MessageBody() data: { roomId: number },
-    // ) {
-    //     if (!client.data.user) return;
+    @SubscribeMessage('callLoto')
+    async handleJoinRoom(
+        @ConnectedSocket() client: Socket,
+        @MessageBody() data: { roomId: number },
+    ) {
+        // if (!client.data.user) return;
+        console.log('ws::call-loto>>handleJoinRoom')
+        const room = await this.chatService.getRoomById(data.roomId);
+        if (room) {
+            client.join(`room-${data.roomId}`);
+            client.emit('joinedRoom', { roomId: data.roomId, roomName: room.name });
 
-    //     const room = await this.chatService.getRoomById(data.roomId);
-    //     if (room) {
-    //         client.join(`room-${data.roomId}`);
-    //         client.emit('joinedRoom', { roomId: data.roomId, roomName: room.name });
-
-    //         // Send recent messages
-    //         const messages = await this.chatService.getMessages(data.roomId);
-    //         client.emit('roomMessages', { roomId: data.roomId, messages });
-    //     }
-    // }
+            // Send recent messages
+            const messages = await this.chatService.getMessages(data.roomId);
+            client.emit('roomMessages', { roomId: data.roomId, messages });
+        }
+    }
 }
