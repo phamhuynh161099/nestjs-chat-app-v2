@@ -5,7 +5,9 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { UploadController } from './upload/upload.controller';
+import { CallLotoModule } from './call-loto/call-loto.module';
 
+console.log('__dirname:', __dirname);
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -15,6 +17,7 @@ import { UploadController } from './upload/upload.controller';
     DatabaseModule,
     AuthModule,
     ChatModule,
+    CallLotoModule
   ],
   controllers: [UploadController],
 })

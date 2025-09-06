@@ -18,6 +18,7 @@ import { JwtService } from '@nestjs/jwt';
         origin: 'http://localhost:3000',
         credentials: true,
     },
+    namespace: '/chat',
 })
 @Injectable()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -45,7 +46,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
                 client.emit('connected', { user: { id: user.id, username: user.username } });
                 this.server.emit('userOnline', { userId: user.id, username: user.username });
 
-                console.log(`User ${user.username} connected`);
+                console.log(`ws::message>>User ${user.username} connected`);
             }
         } catch (error) {
             console.log('Connection error:', error);
@@ -60,7 +61,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             await this.chatService.setUserOnline(user.id, false);
 
             this.server.emit('userOffline', { userId: user.id, username: user.username });
-            console.log(`User ${user.username} disconnected`);
+            console.log(`ws::message>>User ${user.username} disconnected`);
         }
     }
 

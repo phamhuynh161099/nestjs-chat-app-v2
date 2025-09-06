@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Room } from '../entities/room.entity';
 import { Message } from '../entities/message.entity';
+import { Match } from 'src/entities/match';
+import { MatchDetail } from 'src/entities/match-detail';
 
 @Module({
   imports: [
@@ -13,9 +15,9 @@ import { Message } from '../entities/message.entity';
       username: 'dbeaver_user',
       password: 'password123',
       database: 'chat_app_db',
-      entities: [User, Room, Message],
+      entities: [User, Room, Message, Match, MatchDetail],
       synchronize: true,
     }),
   ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }
