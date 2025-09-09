@@ -23,4 +23,10 @@ export class Match {
 
     @OneToMany(() => MatchDetail, match_detail => match_detail.match)
     match_detail: MatchDetail[];
+
+    @Column({
+        comment: '1 is Open, 0 is Closed',
+        default: 1
+    })
+    status: number
 }

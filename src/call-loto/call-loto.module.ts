@@ -8,10 +8,18 @@ import { CallLotoGateway } from './call-loto.gateway';
 import { ChatService } from 'src/chat/chat.service';
 import { Room } from 'src/entities/room.entity';
 import { Message } from 'src/entities/message.entity';
+import { MatchDetail } from 'src/entities/match-detail';
+import { Match } from 'src/entities/match';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User, Room, Message]),
+        TypeOrmModule.forFeature([
+            User,
+            Room,
+            Message,
+            MatchDetail,
+            Match
+        ]),
         JwtModule.register({
             secret: 'your-secret-key',
             signOptions: { expiresIn: '24h' },
